@@ -14,7 +14,6 @@ export default function Navbar() {
           <p className="font-light text-sm">Re-rendering your Looks</p>
         </div>
       </Link>
-
       {/* Search bar */}
       <Input
         placeholder="Search products..."
@@ -36,7 +35,9 @@ export default function Navbar() {
           <Separator orientation="vertical" className="h-auto" />
         </div>
         <div className="flex flex-wrap space-x-2 justify-center items-center">
-          <Button size="sm">Log in</Button>
+          <Link to="/login">
+            <Button size="sm">Log in</Button>
+          </Link>
           <Button size="sm" variant="outline">
             Sign up
           </Button>

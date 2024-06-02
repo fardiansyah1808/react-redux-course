@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@vardiv.com",
+      "password": "admin",
+      "image": "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg",
+      "fullName": "Admin Vardiv",
+      "role": "admin"
+    }
+  ],
+
+  "products": [
+    {
+      "id": 1,
+      "productName": "Fred Perry Twin Tipped T-Shirt - Black",
+      "image": "https://static-id.zacdn.com/p/fred-perry-4017-2964844-1.jpg",
+      "price": 1800000,
+      "stock": 0
+    },
+    {
+      "id": 2,
+      "productName": "Camper Pelotas Athens K100943-002 - White",
+      "image": "https://static-id.zacdn.com/p/linea-7547-3382944-1.jpg",
+      "price": 2999000,
+      "stock": 7
+    },
+    {
+      "id": 3,
+      "productName": "Hugo Boss Embroidered Polo Shirt Dark Blue",
+      "image": "https://static-id.zacdn.com/p/hugo-boss-3380-6726204-1.jpg",
+      "price": 2150000,
+      "stock": 41
+    },
+    {
+      "id": 4,
+      "productName": "Hush Puppies Salmo Denim Shorts",
+      "image": "https://static-id.zacdn.com/p/hush-puppies-5182-2280304-1.jpg",
+      "price": 299500,
+      "stock": 98
+    }
+  ]
+}
