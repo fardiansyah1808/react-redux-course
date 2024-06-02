@@ -1,16 +1,15 @@
 import { axiosInstance } from "@/lib/axios";
 import ProductCard from "./ProductCard";
 import { useEffect, useState } from "react";
-
-// const products = productsRaw.map((product) => {
-//   console.log("products", productsRaw);
-//   return <ProductCard key={product.id} {...product} />;
-// });
+import { Progress } from "./ui/progress";
 
 export default function Main() {
+  const [isLoading, setIsLoading] = useState(false);
   const [productsRaw, setProductsRaw] = useState([]);
+  const [progress, setProgress] = useState(12);
 
   const fetchProducts = async () => {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.get("/products");
       if (response.status === 200) {
@@ -20,11 +19,17 @@ export default function Main() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
+    //fetch data
     fetchProducts();
+    //set progress
+    const timer = setTimeout(() => setProgress(66), 500);
+    return () => clearTimeout(timer);
   }, []);
 
   const products = productsRaw.map((product) => {
@@ -33,9 +38,16 @@ export default function Main() {
 
   return (
     <>
-      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-        {products}
-      </div>
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center h-screen w-[60%]">
+          <p>Loading...</p>
+          <Progress value={progress} />
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          {products}
+        </div>
+      )}
     </>
   );
 }

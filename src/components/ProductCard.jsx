@@ -1,6 +1,7 @@
 import { Heart, Minus, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
+// import { useEffect } from "react";
 import { Input } from "./ui/input";
 
 export default function ProductCard({ image, productName, price, stock }) {
@@ -23,6 +24,23 @@ export default function ProductCard({ image, productName, price, stock }) {
   const addToWishlist = () => {
     setIsInWishlist(!isInWishlist);
   };
+
+  //While Mount
+  // useEffect(() => {
+  //   alert("Component mounted");
+  // }, []);
+
+  //While Update/Mount
+  // useEffect(() => {
+  //   alert("Component updated");
+  // }, [quantity]);
+
+  //While Unmount
+  // useEffect(() => {
+  //   return () => {
+  //     alert("Component unmounted");
+  //   };
+  // }, []);
 
   return (
     <div className="p-4 border rounded-md md:max-w-96 flex flex-col gap-4">
