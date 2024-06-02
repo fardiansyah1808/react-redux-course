@@ -9,8 +9,8 @@ export default function Main() {
   const [progress, setProgress] = useState(12);
 
   const fetchProducts = async () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const response = await axiosInstance.get("/products");
       if (response.status === 200) {
         setProductsRaw(response.data);
@@ -39,7 +39,7 @@ export default function Main() {
   return (
     <>
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center h-screen w-[60%]">
+        <div className="flex flex-col items-center justify-center h-screen w-[60%] gap-2">
           <p>Loading...</p>
           <Progress value={progress} />
         </div>

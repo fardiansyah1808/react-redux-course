@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import WishlistPage from "./pages/WishlistPage";
 import Page404 from "./pages/Page404";
 import Login from "./pages/auth/LoginPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/carttt" element={<Navigate to="/cart" replace />} />
+          <Route path="/product/:id" Component={ProductDetailPage} />
           <Route path="*" Component={Page404} />
         </Routes>
       </div>

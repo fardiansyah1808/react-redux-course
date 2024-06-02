@@ -4,9 +4,11 @@ import Main from "@/components/Main";
 function HomePage() {
   return (
     <>
-      <main className="min-h-[90vh] max-w-screen-xl mx-auto px-4 my-8 flex flex-col justify-center items-center">
+      <main className="min-h-[90vh] max-w-screen-xl mx-auto px-4 my-8 ">
         <Header />
-        <Main />
+        <div className="flex flex-col justify-center items-center">
+          <Main />
+        </div>
       </main>
     </>
   );
