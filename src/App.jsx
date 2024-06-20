@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
 import Navbar from "./components/Navbar";
@@ -10,13 +10,14 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import ProductManagementPage from "./pages/admin/ProductManagementPage";
 
 function App() {
+  const location = useLocation();
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      {!location.pathname.startsWith("/admin" || "/auth") ? <Navbar /> : null}
       <div className="flex-grow">
         <Routes>
           <Route path="/" Component={HomePage} />
-          <Route path="/login" Component={Login} />
+          <Route path="/auth/login" Component={Login} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/carttt" element={<Navigate to="/cart" replace />} />
@@ -25,7 +26,7 @@ function App() {
           <Route path="*" Component={Page404} />
         </Routes>
       </div>
-      <Footer />
+      {!location.pathname.startsWith("/admin" || "/auth") ? <Footer /> : null}
     </div>
   );
 }
