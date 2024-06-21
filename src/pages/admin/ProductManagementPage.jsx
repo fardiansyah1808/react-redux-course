@@ -1,5 +1,6 @@
 import AdminLayout from "@/components/layout/AdminLayout";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Pagination,
   PaginationContent,
@@ -14,7 +15,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { axiosInstance } from "@/lib/axios";
-import { ChevronLeft, ChevronRight, Ellipsis, Plus } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Ellipsis,
+  Plus,
+  SearchIcon,
+} from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -38,6 +45,8 @@ export default function ProductManagementPage() {
     prev: 0,
   });
 
+  const [searchProductName, setSearchProductName] = useState("");
+
   const handleNextPage = () => {
     searchParams.set("page", pagination.next);
     setSearchParams(searchParams);
@@ -48,12 +57,24 @@ export default function ProductManagementPage() {
     setSearchParams(searchParams);
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchProductName) {
+      searchParams.set("productName", searchProductName);
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete("productName");
+      setSearchParams(searchParams);
+    }
+  };
+
   const fetchProducts = useCallback(async () => {
     try {
       const response = await axiosInstance.get("/products", {
         params: {
           _per_page: 5,
           _page: Number(searchParams.get("page")),
+          productName: searchParams.get("productName"),
         },
       });
       const { data } = response;
@@ -87,6 +108,20 @@ export default function ProductManagementPage() {
         </Button>
       }
     >
+      <div className="mb-4">
+        <form className="flex gap-2 justify-end" onSubmit={handleSearch}>
+          <Input
+            placeholder="Search for products..."
+            className="max-w-[400px] lg:max-w-[600px] md:max-w-[300px] sm:max-w-full"
+            onChange={(e) => setSearchProductName(e.target.value)}
+            name="productName"
+            rightSection={<SearchIcon className="w-4 h-4" />}
+          />
+          <Button variant="default" size="sm" type="submit">
+            Search
+          </Button>
+        </form>
+      </div>
       <Table className="p-4 border rounded-md shadow-md">
         <TableHeader>
           <TableRow>
