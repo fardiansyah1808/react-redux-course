@@ -15,15 +15,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { axiosInstance } from "@/lib/axios";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Ellipsis,
-  Plus,
-  SearchIcon,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Ellipsis, Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const rupiah = (number) => {
   return new Intl.NumberFormat("id-ID", {
@@ -47,6 +41,8 @@ export default function ProductManagementPage() {
 
   const [searchProductName, setSearchProductName] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const handleNextPage = () => {
     searchParams.set("page", pagination.next);
     setSearchParams(searchParams);
@@ -69,6 +65,7 @@ export default function ProductManagementPage() {
   };
 
   const fetchProducts = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await axiosInstance.get("/products", {
         params: {
@@ -83,6 +80,8 @@ export default function ProductManagementPage() {
       setPagination(data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   }, [searchParams]);
 
@@ -102,10 +101,12 @@ export default function ProductManagementPage() {
       title="Product Management"
       description="Manage your products and categories"
       rightSection={
-        <Button variant="default" size="sm">
-          <Plus className="w-6 h-6 mr-2" />
-          Add product
-        </Button>
+        <Link to="/admin/products/create">
+          <Button variant="default" size="sm">
+            <Plus className="w-6 h-6 mr-2" />
+            Add product
+          </Button>
+        </Link>
       }
     >
       <div className="mb-4">
@@ -115,7 +116,6 @@ export default function ProductManagementPage() {
             className="max-w-[400px] lg:max-w-[600px] md:max-w-[300px] sm:max-w-full"
             onChange={(e) => setSearchProductName(e.target.value)}
             name="productName"
-            rightSection={<SearchIcon className="w-4 h-4" />}
           />
           <Button variant="default" size="sm" type="submit">
             Search
@@ -133,22 +133,27 @@ export default function ProductManagementPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((product) => (
-            <TableRow key={product.id}>
-              <TableCell>{product.id}</TableCell>
-              <TableCell>{product.productName}</TableCell>
-              <TableCell>{rupiah(product.price)}</TableCell>
-              <TableCell>{product.stock}</TableCell>
-              <TableCell>
-                <Button variant="ghost" size="icon">
-                  <Ellipsis className="w-4 h-4 mr-2" />
-                </Button>
-              </TableCell>
+          {products ? (
+            products.map((product) => (
+              <TableRow key={product.id}>
+                <TableCell>{product.id}</TableCell>
+                <TableCell>{product.productName}</TableCell>
+                <TableCell>{rupiah(product.price)}</TableCell>
+                <TableCell>{product.stock}</TableCell>
+                <TableCell>
+                  <Button variant="ghost" size="icon">
+                    <Ellipsis className="w-4 h-4 mr-2" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan="5">Loading products...</TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
-
       <Pagination className="mt-2">
         <PaginationContent>
           <PaginationItem>
@@ -156,7 +161,9 @@ export default function ProductManagementPage() {
               variant="ghost"
               size="sm"
               onClick={handlePreviousPage}
-              disabled={Number(searchParams.get("page")) === pagination.first}
+              disabled={
+                Number(searchParams.get("page")) === pagination.first || loading
+              }
             >
               <ChevronLeft className="w-4 h-4 mr-2" />
               Previous
@@ -170,7 +177,9 @@ export default function ProductManagementPage() {
               variant="ghost"
               size="sm"
               onClick={handleNextPage}
-              disabled={Number(searchParams.get("page")) === pagination.last}
+              disabled={
+                Number(searchParams.get("page")) === pagination.last || loading
+              }
             >
               Next
               <ChevronRight className="w-4 h-4 ml-2" />
