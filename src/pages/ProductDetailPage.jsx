@@ -52,8 +52,6 @@ export default function ProductDetailPage() {
     fetchProduct();
   }, [fetchProduct]);
 
-  console.log("isLoading", isLoading);
-
   return (
     <main className="min-h-[90vh] max-w-screen-lg mx-auto px-4 my-8">
       <div className="grid grid-cols-2 gap-8">
