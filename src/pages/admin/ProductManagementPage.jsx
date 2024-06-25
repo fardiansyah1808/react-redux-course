@@ -32,13 +32,15 @@ export default function ProductManagementPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({
-    first: 1,
+    first: 0,
     items: 0,
     last: 0,
     next: 0,
-    pages: 1,
+    pages: 0,
     prev: 0,
   });
+
+  console.log(searchParams.get("page"), "search params");
 
   const [searchProductName, setSearchProductName] = useState("");
 
@@ -114,17 +116,19 @@ export default function ProductManagementPage() {
   };
 
   const fetchProducts = useCallback(
-    async (page = 1) => {
+    async (page) => {
       setLoading(true);
       try {
         const response = await axiosInstance.get("/products", {
           params: {
             _limit: 5,
-            _page: Number(searchParams.get("page")),
-            productName: searchParams.get("productName"),
+            _page: page,
+            productName_like: searchParams.get("productName"),
+          },
+          headers: {
+            "Cache-Control": "no-cache",
           },
         });
-        console.log(response, "response");
 
         setProducts(response.data);
 
@@ -194,15 +198,15 @@ export default function ProductManagementPage() {
   };
 
   useEffect(() => {
-    fetchProducts(pagination.pages);
-  }, [fetchProducts]);
-
-  useEffect(() => {
     if (!searchParams.get("page")) {
       searchParams.set("page", 1);
       setSearchParams(searchParams);
     }
   }, []);
+
+  useEffect(() => {
+    fetchProducts(Number(searchParams.get("page")));
+  }, [fetchProducts]);
 
   return (
     <AdminLayout
