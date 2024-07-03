@@ -40,8 +40,6 @@ export default function ProductManagementPage() {
     prev: 0,
   });
 
-  console.log(searchParams.get("page"), "search params");
-
   const [searchProductName, setSearchProductName] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -58,37 +56,18 @@ export default function ProductManagementPage() {
     setSearchParams(searchParams);
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchProductName) {
-      searchParams.set("productName", searchProductName);
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchProductName) {
+        searchParams.set("productName", searchProductName);
+      } else {
+        searchParams.delete("productName");
+      }
       setSearchParams(searchParams);
-    } else {
-      searchParams.delete("productName");
-      setSearchParams(searchParams);
-    }
-  };
+    }, 1200);
 
-  // const handleCheckedAllProducts = (checked) => {
-  //   if (checked) {
-  //     if (selectedProducts.length === 0) {
-  //       setSelectedProducts(products.map((product) => product.id));
-  //     } else {
-  //       const newSelectedProducts = products
-  //         .map((product) => product.id)
-  //         .filter((id) => !selectedProducts.includes(id));
-
-  //       setSelectedProducts([...selectedProducts, ...newSelectedProducts]);
-  //     }
-  //   } else {
-  //     const newSelectedProducts = selectedProducts.filter(
-  //       (id) => !products.some((product) => product.id === id)
-  //     );
-
-  //     setSelectedProducts(newSelectedProducts);
-  //   }
-  // };
-
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchProductName, searchParams, setSearchParams]);
   const handleCheckedAllProducts = (checked) => {
     if (checked) {
       const newSelectedProducts = products
@@ -152,8 +131,6 @@ export default function ProductManagementPage() {
     [searchParams]
   );
 
-  console.log(pagination, "next");
-
   const handleDeleteProduct = async (id) => {
     const deleteProduct = confirm(
       "Are you sure you want to delete this product?"
@@ -171,6 +148,8 @@ export default function ProductManagementPage() {
       alert("Failed to delete product");
     } finally {
       await fetchProducts();
+      setSelectedProducts([]);
+      setSearchProductName("");
     }
   };
 
@@ -192,6 +171,7 @@ export default function ProductManagementPage() {
     } finally {
       await fetchProducts();
       setSelectedProducts([]);
+      setSearchProductName("");
       searchParams.set("page", pagination.first);
       setSearchParams(searchParams);
     }
@@ -221,44 +201,17 @@ export default function ProductManagementPage() {
         </Link>
       }
     >
-      {selectedProducts.length > 0 ? (
-        <div className="flex gap-4 justify-between mb-4">
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={handleDeleteSelected}
-          >
-            Delete {selectedProducts.length} Products
-          </Button>
-          <form
-            className="flex gap-2 justify-end w-full"
-            onSubmit={handleSearch}
-          >
-            <Input
-              placeholder="Search for products..."
-              className="max-w-[400px] lg:max-w-[600px] md:max-w-[300px] sm:max-w-full"
-              onChange={(e) => setSearchProductName(e.target.value)}
-              name="productName"
-            />
-            <Button variant="default" size="sm" type="submit">
-              Search
-            </Button>
-          </form>
-        </div>
-      ) : (
-        <form className="flex gap-2 justify-end mb-4" onSubmit={handleSearch}>
-          <Input
-            placeholder="Search for products..."
-            className="max-w-[400px] lg:max-w-[600px] md:max-w-[300px] sm:max-w-full"
-            onChange={(e) => setSearchProductName(e.target.value)}
-            name="productName"
-          />
-          <Button variant="default" size="sm" type="submit">
-            Search
-          </Button>
-        </form>
-      )}
-
+      <div className="flex gap-2 justify-between w-full mb-4">
+        <Button variant="destructive" size="sm" onClick={handleDeleteSelected}>
+          Delete {selectedProducts.length} Products
+        </Button>
+        <Input
+          placeholder="Search for products..."
+          className="max-w-[400px] lg:max-w-[600px] md:max-w-[300px] sm:max-w-full"
+          onChange={(e) => setSearchProductName(e.target.value)}
+          name="productName"
+        />
+      </div>
       <Table className="p-4 border rounded-md shadow-md">
         <TableHeader>
           <TableRow>

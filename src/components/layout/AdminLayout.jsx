@@ -1,28 +1,33 @@
 import { ShoppingCart, Tag, User } from "lucide-react";
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 const sidebarItems = [
   {
     icon: <Tag className="w-6 h-6 mr-4" />,
     label: "Products Management",
+    path: "/admin/products",
   },
   {
     icon: <ShoppingCart className="w-6 h-6 mr-4" />,
     label: "Order Management",
+    path: "/admin/orders",
   },
 ];
 
 const SidebarItems = (props) => {
-  const { icon, label } = props;
+  const { icon, label, path } = props;
   return (
-    <Button
-      variant="ghost"
-      size="lg"
-      className="w-full rounded-none justify-start"
-    >
-      {icon}
-      {label}
-    </Button>
+    <Link to={path}>
+      <Button
+        variant="ghost"
+        size="lg"
+        className="w-full rounded-none justify-start"
+      >
+        {icon}
+        {label}
+      </Button>
+    </Link>
   );
 };
 
@@ -32,11 +37,18 @@ export default function AdminLayout(props) {
     <div className="flex">
       <aside className="w-72 border-r h-screen">
         <div className="h-16 flex flex-col items-center justify-center border-b">
-          <h1 className="font-bold text-2xl">Admin Dashboard</h1>
+          <Link to="/admin/products">
+            <h1 className="font-bold text-2xl">Admin Dashboard</h1>
+          </Link>
         </div>
         <div className="flex flex-col space-y-0 py-4">
           {sidebarItems.map((item, index) => (
-            <SidebarItems key={index} icon={item.icon} label={item.label} />
+            <SidebarItems
+              key={index}
+              icon={item.icon}
+              label={item.label}
+              path={item.path}
+            />
           ))}
         </div>
       </aside>

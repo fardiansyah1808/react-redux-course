@@ -88,7 +88,6 @@ export default function LoginPage() {
             <div className="flex justify-end items-center space-x-2 my-2">
               <Checkbox
                 id="show-password"
-                // onClick={() => setShowPassword(!showPassword)}
                 onCheckedChange={(show) => setShowPassword(show)}
               />
               <Label htmlFor="show-password" className="hover:cursor-pointer">
