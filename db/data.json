@@ -23,6 +23,13 @@
       "image": "https://static-id.zacdn.com/p/linea-7547-3382944-1.jpg",
       "price": 2999000,
       "stock": 7
+    },
+    {
+      "id": "da0be975-f46b-422d-8e71-7603815c2d1a",
+      "productName": "samsung",
+      "image": "https://placehold.jp/396x594.png",
+      "price": 10000000,
+      "stock": 2
     }
   ]
 }

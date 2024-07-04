@@ -1,7 +1,8 @@
 const initialState = {
-  username: "",
-  email: "",
-  role: "",
+  id: 1,
+  username: "fardi",
+  email: "fardi@gmail.com",
+  role: "admin",
 };
 
 export const userReducer = (state = initialState, action) => {

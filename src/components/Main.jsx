@@ -2,11 +2,15 @@ import { axiosInstance } from "@/lib/axios";
 import ProductCard from "./ProductCard";
 import { useEffect, useState } from "react";
 import { Progress } from "./ui/progress";
+import { useSelector } from "react-redux";
 
 export default function Main() {
   const [isLoading, setIsLoading] = useState(false);
   const [productsRaw, setProductsRaw] = useState([]);
   const [progress, setProgress] = useState(12);
+
+  const userSelector = useSelector((state) => state.user);
+  const counterSelector = useSelector((state) => state.counter);
 
   const fetchProducts = async () => {
     try {
@@ -44,9 +48,15 @@ export default function Main() {
           <Progress value={progress} />
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          {products}
-        </div>
+        <>
+          <div className="flex items-center justify-center">
+            <p>{userSelector.username}</p>
+            <p>{counterSelector}</p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            {products}
+          </div>
+        </>
       )}
     </>
   );

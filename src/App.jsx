@@ -10,6 +10,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import ProductManagementPage from "./pages/admin/ProductManagementPage";
 import CreateProductPage from "./pages/admin/CreateProductPage";
 import EditProductPage from "./pages/admin/EditProductPage";
+import Counter from "./pages/Counter";
 
 function App() {
   const location = useLocation();
@@ -23,6 +24,7 @@ function App() {
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/carttt" element={<Navigate to="/cart" replace />} />
+          <Route path="/counter" Component={Counter} />
           <Route path="/product/:id" Component={ProductDetailPage} />
           <Route path="/admin">
             <Route path="products" Component={ProductManagementPage} />
