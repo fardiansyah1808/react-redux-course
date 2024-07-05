@@ -3,9 +3,10 @@
     {
       "id": "1",
       "email": "admin@vardiv.com",
-      "password": "admin",
-      "image": "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg",
+      "username": "admin",
       "fullName": "Admin Vardiv",
+      "password": "adminadmin",
+      "image": "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg",
       "role": "admin"
     }
   ],

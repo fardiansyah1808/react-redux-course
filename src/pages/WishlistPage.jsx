@@ -1,10 +1,12 @@
+import ProtectedPage from "@/components/guard/ProtectedPage";
+
 function WishlistPage() {
   return (
-    <div>
+    <ProtectedPage>
       <p className="flex justify-center items-center h-screen text-5xl font-extrabold">
         Wishlist Page
       </p>
-    </div>
+    </ProtectedPage>
   );
 }
 

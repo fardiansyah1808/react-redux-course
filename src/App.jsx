@@ -11,16 +11,53 @@ import ProductManagementPage from "./pages/admin/ProductManagementPage";
 import CreateProductPage from "./pages/admin/CreateProductPage";
 import EditProductPage from "./pages/admin/EditProductPage";
 import Counter from "./pages/Counter";
+import RegisterPage from "./pages/auth/RegisterPage";
+import { useDispatch } from "react-redux";
+import { axiosInstance } from "./lib/axios";
+import { useEffect, useState } from "react";
+import { Spinner } from "./components/ui/spinner";
 
 function App() {
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  const [isHydrated, setIsHydrated] = useState(false);
+  const hydrateUser = async () => {
+    try {
+      const currentUser = localStorage.getItem("current-user");
+      if (!currentUser) {
+        return;
+      }
+      const userResponse = await axiosInstance.get(`/users/${currentUser}`);
+
+      dispatch({ type: "LOGIN", payload: userResponse.data });
+    } catch (error) {
+      console.error("Error hydrating user:", error);
+    } finally {
+      setIsHydrated(true);
+    }
+  };
+
+  useEffect(() => {
+    hydrateUser();
+  }, []);
+
+  if (!isHydrated) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Spinner size="large" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
-      {!location.pathname.startsWith("/admin" || "/auth") ? <Navbar /> : null}
+      {!location.pathname.startsWith("/auth") ? <Navbar /> : null}
       <div className="flex-grow">
         <Routes>
           <Route path="/" Component={HomePage} />
           <Route path="/auth/login" Component={Login} />
+          <Route path="/auth/register" Component={RegisterPage} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/carttt" element={<Navigate to="/cart" replace />} />
@@ -34,7 +71,7 @@ function App() {
           <Route path="*" Component={Page404} />
         </Routes>
       </div>
-      {!location.pathname.startsWith("/admin" || "/auth") ? <Footer /> : null}
+      {!location.pathname.startsWith("/auth") ? <Footer /> : null}
     </div>
   );
 }
