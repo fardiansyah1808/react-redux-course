@@ -8,6 +8,15 @@
       "password": "adminadmin",
       "image": "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg",
       "role": "admin"
+    },
+    {
+      "email": "user@vardiv.com",
+      "username": "user",
+      "password": "useruser",
+      "fullName": "User Vardiv",
+      "role": "user",
+      "image": "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg",
+      "id": "SQMkXGX"
     }
   ],
   "products": [
@@ -32,5 +41,6 @@
       "price": 10000000,
       "stock": 2
     }
-  ]
+  ],
+  "carts": []
 }

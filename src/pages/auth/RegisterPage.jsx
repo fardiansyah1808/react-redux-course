@@ -25,8 +25,9 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { axiosInstance } from "@/lib/axios";
-import { useDispatch } from "react-redux";
 import GuestPage from "@/components/guard/GuestPage";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const loginSchema = z
   .object({
@@ -52,8 +53,8 @@ const loginSchema = z
   });
 
 export default function RegisterPage() {
-  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
   const form = useForm({
     defaultValues: {
       email: "",
@@ -90,11 +91,17 @@ export default function RegisterPage() {
         image:
           "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg",
       });
-      alert("Register Successfully!");
+
+      const registerdUser = await axiosInstance.get("/users", {
+        params: { username: inputValues.username },
+      });
       dispatch({
         type: "LOGIN",
-        payload: inputValues,
+        payload: registerdUser.data[0],
       });
+      localStorage.setItem("current-user", registerdUser.data[0].id);
+
+      alert("Register Successfully!");
       form.reset();
     } catch (error) {
       console.error(error);
@@ -197,9 +204,11 @@ export default function RegisterPage() {
                 <Button className="w-full" type="submit">
                   Register
                 </Button>
-                <Button variant="link" className="w-full">
-                  Already have an account?
-                </Button>
+                <Link to="/auth/login">
+                  <Button variant="link" className="w-full">
+                    Already have an account?
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           </form>

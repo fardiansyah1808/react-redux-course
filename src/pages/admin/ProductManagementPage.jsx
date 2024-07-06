@@ -16,17 +16,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { axiosInstance } from "@/lib/axios";
+import { formatRupiah } from "@/lib/formatRupiah";
 import { ChevronLeft, ChevronRight, Edit3, Plus, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-
-const rupiah = (number) => {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(number);
-};
 
 export default function ProductManagementPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -242,7 +235,7 @@ export default function ProductManagementPage() {
                 </TableCell>
                 <TableCell>{product.id}</TableCell>
                 <TableCell>{product.productName}</TableCell>
-                <TableCell>{rupiah(product.price)}</TableCell>
+                <TableCell>{formatRupiah(product.price)}</TableCell>
                 <TableCell>{product.stock}</TableCell>
                 <TableCell className="flex gap-4">
                   <Button variant="ghost" size="icon" asChild>

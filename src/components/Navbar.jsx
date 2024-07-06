@@ -2,17 +2,15 @@ import { Heart, ShoppingCart } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Navbar() {
   const userSelector = useSelector((state) => state.user);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
     localStorage.removeItem("current-user");
-    navigate("/auth/login");
   };
   return (
     <nav className="border-b-2 border-gray-200 py-4 flex justify-between items-center px-8">
@@ -46,7 +44,9 @@ export default function Navbar() {
         <div className="flex flex-wrap space-x-2 justify-center items-center">
           {userSelector.id ? (
             <>
-              <p>{userSelector.username}</p>
+              <p>
+                {userSelector.username}({userSelector.role})
+              </p>
               <Button size="sm" variant="destructive" onClick={handleLogout}>
                 Log out
               </Button>

@@ -12,35 +12,13 @@ import CreateProductPage from "./pages/admin/CreateProductPage";
 import EditProductPage from "./pages/admin/EditProductPage";
 import Counter from "./pages/Counter";
 import RegisterPage from "./pages/auth/RegisterPage";
-import { useDispatch } from "react-redux";
-import { axiosInstance } from "./lib/axios";
-import { useEffect, useState } from "react";
 import { Spinner } from "./components/ui/spinner";
+import { useHydration } from "./hooks/useHydration";
 
 function App() {
   const location = useLocation();
-  const dispatch = useDispatch();
 
-  const [isHydrated, setIsHydrated] = useState(false);
-  const hydrateUser = async () => {
-    try {
-      const currentUser = localStorage.getItem("current-user");
-      if (!currentUser) {
-        return;
-      }
-      const userResponse = await axiosInstance.get(`/users/${currentUser}`);
-
-      dispatch({ type: "LOGIN", payload: userResponse.data });
-    } catch (error) {
-      console.error("Error hydrating user:", error);
-    } finally {
-      setIsHydrated(true);
-    }
-  };
-
-  useEffect(() => {
-    hydrateUser();
-  }, []);
+  const { isHydrated } = useHydration();
 
   if (!isHydrated) {
     return (
@@ -52,7 +30,10 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {!location.pathname.startsWith("/auth") ? <Navbar /> : null}
+      {!location.pathname.startsWith("/auth") &&
+      !location.pathname.startsWith("/admin") ? (
+        <Navbar />
+      ) : null}
       <div className="flex-grow">
         <Routes>
           <Route path="/" Component={HomePage} />
@@ -71,7 +52,10 @@ function App() {
           <Route path="*" Component={Page404} />
         </Routes>
       </div>
-      {!location.pathname.startsWith("/auth") ? <Footer /> : null}
+      {!location.pathname.startsWith("/auth") &&
+      !location.pathname.startsWith("/admin") ? (
+        <Footer />
+      ) : null}
     </div>
   );
 }

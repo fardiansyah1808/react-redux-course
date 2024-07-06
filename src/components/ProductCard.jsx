@@ -4,12 +4,15 @@ import { useState } from "react";
 // import { useEffect } from "react";
 import { Input } from "./ui/input";
 import { Link } from "react-router-dom";
+import { axiosInstance } from "@/lib/axios";
+import { useSelector } from "react-redux";
 
 export default function ProductCard({ image, productName, price, stock, id }) {
   // const { image, productName, price, stock } = props;
   const [quantity, setQuantity] = useState(stock === 0 ? 0 : 1);
   const [isInCart, setIsInCart] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
+  const userSelected = useSelector((state) => state.user);
 
   const handleQuantityChange = (numValue) => {
     if (!isNaN(numValue)) {
@@ -17,9 +20,21 @@ export default function ProductCard({ image, productName, price, stock, id }) {
     }
   };
 
-  const addToCart = (quantity) => {
-    alert(`Added ${quantity} ${productName} to cart`);
-    setIsInCart(true);
+  const addToCart = async () => {
+    if (!userSelected.id) {
+      return alert("Please login to add to cart");
+    }
+    try {
+      await axiosInstance.post("/carts", {
+        userId: userSelected.id,
+        productId: id,
+        quantity,
+      });
+      alert(`${quantity} ${productName} added to cart`);
+      setIsInCart(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const addToWishlist = () => {

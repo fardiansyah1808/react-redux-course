@@ -27,6 +27,7 @@ import { z } from "zod";
 import { axiosInstance } from "@/lib/axios";
 import { useDispatch } from "react-redux";
 import GuestPage from "@/components/guard/GuestPage";
+import { Link } from "react-router-dom";
 
 const loginSchema = z.object({
   username: z
@@ -143,9 +144,11 @@ export default function LoginPage() {
                 <Button className="w-full" type="submit">
                   Login
                 </Button>
-                <Button variant="link" className="w-full">
-                  Don&apos;t have an account?
-                </Button>
+                <Link to="/auth/register">
+                  <Button variant="link" className="w-full">
+                    Don&apos;t have an account?
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           </form>
