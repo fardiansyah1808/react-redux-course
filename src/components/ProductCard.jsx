@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "@/lib/axios";
 import { useSelector } from "react-redux";
+import { fetchCarts } from "@/lib/fetchCart";
 
 export default function ProductCard({ image, productName, price, stock, id }) {
   // const { image, productName, price, stock } = props;
@@ -13,6 +14,7 @@ export default function ProductCard({ image, productName, price, stock, id }) {
   const [isInCart, setIsInCart] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const userSelected = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
 
   const handleQuantityChange = (numValue) => {
     if (!isNaN(numValue)) {
@@ -20,17 +22,51 @@ export default function ProductCard({ image, productName, price, stock, id }) {
     }
   };
 
+  // const fetchCarts = async () => {
+  //   try {
+  //     const cartResponse = await axiosInstance.get("/carts", {
+  //       params: {
+  //         userId: userSelected.id,
+  //         _expand: "product",
+  //       },
+  //     });
+  //     dispatch({ type: "GET_CARTS", payload: cartResponse.data });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
   const addToCart = async () => {
     if (!userSelected.id) {
       return alert("Please login to add to cart");
     }
     try {
-      await axiosInstance.post("/carts", {
-        userId: userSelected.id,
-        productId: id,
-        quantity,
+      const cartResponse = await axiosInstance.get("/carts", {
+        params: {
+          userId: userSelected.id,
+          _expand: "product",
+        },
       });
+      const existingCart = cartResponse.data.find((cart) => {
+        return cart.productId === id;
+      });
+      if (!existingCart) {
+        await axiosInstance.post("/carts", {
+          userId: userSelected.id,
+          productId: id,
+          quantity,
+        });
+      } else {
+        if (existingCart.quantity + quantity > existingCart.product.stock) {
+          return alert("Stock is not enough");
+        }
+        await axiosInstance.patch(`/carts/${existingCart.id}`, {
+          quantity: existingCart.quantity + quantity,
+        });
+      }
+
       alert(`${quantity} ${productName} added to cart`);
+      fetchCarts(userSelected.id);
       setIsInCart(true);
     } catch (error) {
       console.error(error);

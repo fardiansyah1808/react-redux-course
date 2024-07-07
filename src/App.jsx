@@ -14,6 +14,8 @@ import Counter from "./pages/Counter";
 import RegisterPage from "./pages/auth/RegisterPage";
 import { Spinner } from "./components/ui/spinner";
 import { useHydration } from "./hooks/useHydration";
+import HistoryPage from "./pages/HistoryPage";
+import { HistoryDetailPage } from "./pages/HistoryDetailPage";
 
 function App() {
   const location = useLocation();
@@ -44,6 +46,8 @@ function App() {
           <Route path="/carttt" element={<Navigate to="/cart" replace />} />
           <Route path="/counter" Component={Counter} />
           <Route path="/product/:id" Component={ProductDetailPage} />
+          <Route path="/history" Component={HistoryPage} />
+          <Route path="/history/:id" Component={HistoryDetailPage} />
           <Route path="/admin">
             <Route path="products" Component={ProductManagementPage} />
             <Route path="products/create" Component={CreateProductPage} />

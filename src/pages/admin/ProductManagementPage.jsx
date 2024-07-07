@@ -20,6 +20,7 @@ import { formatRupiah } from "@/lib/formatRupiah";
 import { ChevronLeft, ChevronRight, Edit3, Plus, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function ProductManagementPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,6 +40,15 @@ export default function ProductManagementPage() {
 
   const [selectedProducts, setSelectedProducts] = useState([]);
 
+  const debouceSearch = useDebouncedCallback(() => {
+    if (searchProductName) {
+      searchParams.set("productName", searchProductName);
+    } else {
+      searchParams.delete("productName");
+    }
+    setSearchParams(searchParams);
+  }, 1200);
+
   const handleNextPage = () => {
     searchParams.set("page", pagination.next);
     setSearchParams(searchParams);
@@ -49,18 +59,23 @@ export default function ProductManagementPage() {
     setSearchParams(searchParams);
   };
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (searchProductName) {
-        searchParams.set("productName", searchProductName);
-      } else {
-        searchParams.delete("productName");
-      }
-      setSearchParams(searchParams);
-    }, 1200);
+  // useEffect(() => {
+  //   const delayDebounce = setTimeout(() => {
+  //     if (searchProductName) {
+  //       searchParams.set("productName", searchProductName);
+  //     } else {
+  //       searchParams.delete("productName");
+  //     }
+  //     setSearchParams(searchParams);
+  //   }, 1200);
 
-    return () => clearTimeout(delayDebounceFn);
+  //   return () => clearTimeout(delayDebounce);
+  // }, [searchProductName, searchParams, setSearchParams]);
+
+  useEffect(() => {
+    debouceSearch();
   }, [searchProductName, searchParams, setSearchParams]);
+
   const handleCheckedAllProducts = (checked) => {
     if (checked) {
       const newSelectedProducts = products

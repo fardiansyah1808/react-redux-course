@@ -25,22 +25,107 @@
       "productName": "Fred Perry Twin Tipped T-Shirt - Black",
       "image": "https://static-id.zacdn.com/p/fred-perry-4017-2964844-1.jpg",
       "price": 1800000,
-      "stock": 0
+      "stock": 12
     },
     {
       "id": "2",
       "productName": "Camper Pelotas Athens K100943-002 - White",
       "image": "https://static-id.zacdn.com/p/linea-7547-3382944-1.jpg",
       "price": 2999000,
-      "stock": 7
+      "stock": 3
     },
     {
       "id": "da0be975-f46b-422d-8e71-7603815c2d1a",
       "productName": "samsung",
       "image": "https://placehold.jp/396x594.png",
       "price": 10000000,
-      "stock": 2
+      "stock": 13
     }
   ],
-  "carts": []
+  "carts": [],
+  "transactions": [
+    {
+      "userId": "1",
+      "tax": 4157780,
+      "totalPrice": 41955780,
+      "trxDate": "2024-07-07T14:43:30.606Z",
+      "items": [
+        {
+          "userId": "1",
+          "productId": "1",
+          "quantity": 1,
+          "id": 1,
+          "product": {
+            "id": "1",
+            "productName": "Fred Perry Twin Tipped T-Shirt - Black",
+            "image": "https://static-id.zacdn.com/p/fred-perry-4017-2964844-1.jpg",
+            "price": 1800000,
+            "stock": 16
+          }
+        },
+        {
+          "userId": "1",
+          "productId": "2",
+          "quantity": 2,
+          "id": 2,
+          "product": {
+            "id": "2",
+            "productName": "Camper Pelotas Athens K100943-002 - White",
+            "image": "https://static-id.zacdn.com/p/linea-7547-3382944-1.jpg",
+            "price": 2999000,
+            "stock": 5
+          }
+        },
+        {
+          "userId": "1",
+          "productId": "da0be975-f46b-422d-8e71-7603815c2d1a",
+          "quantity": 3,
+          "id": 3,
+          "product": {
+            "id": "da0be975-f46b-422d-8e71-7603815c2d1a",
+            "productName": "samsung",
+            "image": "https://placehold.jp/396x594.png",
+            "price": 10000000,
+            "stock": 17
+          }
+        }
+      ],
+      "id": 1
+    },
+    {
+      "userId": "1",
+      "tax": 1694000,
+      "totalPrice": 17094000,
+      "trxDate": "2024-07-07T15:01:50.354Z",
+      "items": [
+        {
+          "userId": "1",
+          "productId": "1",
+          "quantity": 3,
+          "id": 1,
+          "product": {
+            "id": "1",
+            "productName": "Fred Perry Twin Tipped T-Shirt - Black",
+            "image": "https://static-id.zacdn.com/p/fred-perry-4017-2964844-1.jpg",
+            "price": 1800000,
+            "stock": 15
+          }
+        },
+        {
+          "userId": "1",
+          "productId": "da0be975-f46b-422d-8e71-7603815c2d1a",
+          "quantity": 1,
+          "id": 2,
+          "product": {
+            "id": "da0be975-f46b-422d-8e71-7603815c2d1a",
+            "productName": "samsung",
+            "image": "https://placehold.jp/396x594.png",
+            "price": 10000000,
+            "stock": 14
+          }
+        }
+      ],
+      "id": 2
+    }
+  ]
 }
